@@ -1,6 +1,6 @@
 {
   "name": "req-mq-api",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "An API provider based on BullMQ (Redis) that allows Promise-based inter-process communication to make HTTP-like GET and POST requests.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
