@@ -1,0 +1,7 @@
+{
+	"extends": "../tsconfig-base",
+	"references": [{ "path": "../lib" }],
+	"compilerOptions": {
+		"outDir": "../dist"
+	}
+}

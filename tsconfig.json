@@ -1,0 +1,16 @@
+{
+  "references": [
+    { "path": "./lib/tsconfig.json" },
+    { "path": "./test/tsconfig.json" }
+  ],
+  "extends": "./tsconfig-base.json",
+  "compilerOptions": {
+    "outDir": "./dist"
+  },
+  "include": [
+    "./index.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
