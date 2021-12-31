@@ -46,7 +46,7 @@ class RequestableGateway {
 	 */
 	private async process(job: Job<RequestJob>): Promise<void> {
 		if (job.data.id === undefined || job.data.functionName === undefined) {
-			this.sendResponse(job.data.id, { error: new Error(RequestableError.BAD_REQUEST) });
+			this.sendResponse(job.data.id, { error: RequestableError.BAD_REQUEST });
 			return;
 		}
 
@@ -69,7 +69,7 @@ class RequestableGateway {
 /**
  * The BullMQ Job containing a SuperRequestable request.
  */
-interface RequestJob {
+export interface RequestJob {
 	/**
 	 * Represents the unique identifier for the current request.
 	 */
@@ -88,13 +88,13 @@ interface RequestJob {
 	/**
 	 * The arguments that will be passed to the requestable function.
 	 */
-	args: any[]
+	args?: any[]
 }
 
 /**
  * The BullMQ Job containing a SuperRequestable response.
  */
-interface ResponseJob {
+export interface ResponseJob {
 	/**
 	 * Represents the unique identifier that was sent over with the request.
 	 */

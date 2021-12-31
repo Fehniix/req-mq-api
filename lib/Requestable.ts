@@ -1,6 +1,8 @@
-import _debug from 'debug';
 import Method from './model/Method';
-const debug = _debug('req-mq-api:requestable');
+import SuperRequestable from './SuperRequestable';
+
+import _debug from 'debug';
+const debug = _debug('superrequestable:requestable');
 
 /**
  * Marks a method as "requestable".
@@ -11,21 +13,7 @@ const debug = _debug('req-mq-api:requestable');
  */
 export function requestable(method: Method, echoError: boolean = false) {
 	return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
-		const originalMethod = descriptor.value;
-
-		descriptor.value = function (...args: any[]) {
-			debug(`Registering ${propertyKey} function as ${method}-requestable.`)
-			originalMethod.apply(this, args);
-		}
+		debug(`Registering "${target?.constructor?.name}#${propertyKey}" function as ${method}-requestable.`);
+		SuperRequestable.register(descriptor.value, method, echoError);
 	}
 };
-
-/**
-const test: Requestable = new Requestable('remoteName');
-const result = test.get('method1', {
-	param1: 123
-});
-const result2 = test.post('method2', {
-
-});
- */

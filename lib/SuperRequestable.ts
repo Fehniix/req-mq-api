@@ -1,11 +1,12 @@
-import { Queue } from "bullmq";
-import { Worker } from "bullmq";
 import { RequestableError } from "./model/RequestableErrors";
 import { RequestableResult } from "./model/RequestableResult";
 import { RequestableFunction } from "./model/RequestableFunction";
 import Method from "./model/Method";
 import IORedis from "ioredis";
 import RequestableGateway from "./RequestableGateway";
+
+import _debug from 'debug';
+const debug = _debug('superrequestable');
 
 type References = Map<string, RequestableFunction>;
 
@@ -51,6 +52,8 @@ class SuperRequestable {
 			_function: _function,
 			shouldEchoErrors: echoError
 		});
+
+		debug(`Registered "${_function.name}" function as ${method}-requestable. Will echo errors = ${echoError}.`);
 	}
 
 	/**
@@ -63,12 +66,12 @@ class SuperRequestable {
 		let references: References = this.selectReferences(method);
 
 		if (references === undefined)
-			return { error: new Error(RequestableError.INVALID_METHOD) };
+			return { error: RequestableError.INVALID_METHOD };
 
 		let requestableFunction: RequestableFunction | undefined = references.get(name);
 		
 		if (requestableFunction === undefined)
-			return { error: new Error(RequestableError.REQUESTABLE_NOT_FOUND) }
+			return { error: RequestableError.REQUESTABLE_NOT_FOUND }
 
 		const _function = requestableFunction._function;
 
@@ -77,14 +80,14 @@ class SuperRequestable {
 			result = await _function.apply(this, args);
 		} catch (error) {
 			if (!requestableFunction.shouldEchoErrors)
-				return { error: new Error(RequestableError.DEFAULT_ERROR) }
+				return { error: RequestableError.DEFAULT_ERROR }
 
-			let _err: Error = new Error(`Unknown error: ${error}`);
+			let _err: string = `Unknown error: ${error}`;
 
 			if (typeof error === 'string')
-				_err.message = error;
-			else if (error instanceof Error)
 				_err = error;
+			else if (error instanceof Error)
+				_err = error.message;
 
 			return { error: _err }
 		}
