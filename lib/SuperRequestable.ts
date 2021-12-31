@@ -62,7 +62,7 @@ class SuperRequestable {
 	 * @param method The request's method.
 	 * @param args The arguments that are applied to the `Requestable` function.
 	 */
-	public async request(name: string, method: Method, args: any): Promise<RequestableResult> {
+	public async request(name: string, method: Method, args?: any[]): Promise<RequestableResult> {
 		let references: References = this.selectReferences(method);
 
 		if (references === undefined)

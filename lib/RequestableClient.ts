@@ -21,20 +21,23 @@ class RequestableClient {
 	/**
 	 * The BullMQ Queue responsible for sending requestable requests.
 	 */
-	private bmqQueue: Queue<RequestJob>;
+	private bmqQueue!: Queue<RequestJob>;
 
 	/**
 	 * The BullMQ Events object responsible for determining when a response was received.
 	 */
-	private bmqQueueEvents: QueueEvents;
+	private bmqQueueEvents!: QueueEvents;
 
 	/**
 	 * The IORedis connection used by the underlying BullMQ queue and worker.
 	 */
-	private redisConnection: IORedis.Redis;
+	private redisConnection!: IORedis.Redis;
 
-	public constructor() {
-		this.redisConnection = Redis.createConnection(process.env.REDIS_URL!);
+	/**
+	 * Starts the client.
+	 */
+	public start(redis: string | IORedis.Redis): void {
+		this.redisConnection = Redis.createConnection(redis);
 
 		this.bmqQueue = new Queue('superrequestable:request', {
 			connection: this.redisConnection.duplicate()
@@ -67,7 +70,10 @@ class RequestableClient {
 		return this.request<T>(functionName, 'POST', args);
 	}
 
-	private async request<T>(functionName: string, method: Method, ...args: any[]): Promise<RequestableResult<T>> {
+	private async request<T>(functionName: string, method: Method, args: any[]): Promise<RequestableResult<T>> {
+		if (this.bmqQueue === undefined || this.bmqWorker === undefined || this.bmqQueueEvents === undefined)
+			throw new Error('The RequestableClient must be started first by calling `.start()`.');
+
 		return new Promise((resolve, reject) => {
 			const requestResponseUUID: string = randomUUID();
 
