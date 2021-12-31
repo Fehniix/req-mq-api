@@ -1,5 +1,5 @@
 {
-  "name": "req-mq-api",
+  "name": "superrequestable",
   "version": "0.0.3",
   "description": "An API provider based on BullMQ (Redis) that allows Promise-based inter-process communication to make HTTP-like GET and POST requests.",
   "main": "./dist/index.js",
@@ -7,12 +7,13 @@
   "scripts": {
     "clean": "tsc --build --clean",
     "build": "npm run clean && tsc --build",
+    "start": "npm run build && node dist/lib/index.js",
     "test": "export TEST=true&& npm run build && mocha --full-trace --require ./dist/test/setup.js ./dist/test/*.test.js ./dist/test/**/*.test.js && export TEST=false",
     "test-dev": "export DEBUG=req-mg-api:*&& npm test && export DEBUG="
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Fehniix/req-mq-api.git"
+    "url": "git+https://github.com/Fehniix/superrequestable.git"
   },
   "keywords": [
     "api",
@@ -25,9 +26,9 @@
   "author": "Johnny Bueti",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Fehniix/req-mq-api/issues"
+    "url": "https://github.com/Fehniix/superrequestable/issues"
   },
-  "homepage": "https://github.com/Fehniix/req-mq-api#readme",
+  "homepage": "https://github.com/Fehniix/superrequestable#readme",
   "dependencies": {
     "bullmq": "~1.57.3",
     "chai": "~4.3.4",
@@ -36,7 +37,10 @@
   },
   "devDependencies": {
     "@types/chai": "~4.3.0",
+    "@types/debug": "^4.1.7",
+    "@types/ioredis": "^4.28.5",
     "@types/mocha": "~9.0.0",
-    "@types/node": "~16.11.12"
+    "@types/node": "~16.11.12",
+    "debug": "^4.3.3"
   }
 }

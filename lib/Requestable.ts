@@ -1,3 +1,7 @@
+import _debug from 'debug';
+import Method from './model/Method';
+const debug = _debug('req-mq-api:requestable');
+
 /**
  * Marks a method as "requestable".
  * A "requestable" method can be called by a remote client that will be able to also capture its returning value.
@@ -5,12 +9,23 @@
  * @param method Can be either 'GET' or 'POST', as in HTTP requests. A 'GET' requestable is called through `.get()`, a 'POST' method through `.post()`.
  * @param echoError Whether the an eventual error should be echoed back to the client - if set to `true`, any error thrown by the decorated method will be echoed **as is** to the remote client! 
  */
-export function requestable(method: 'GET' | 'POST', echoError: boolean = false) {
+export function requestable(method: Method, echoError: boolean = false) {
 	return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
 		const originalMethod = descriptor.value;
 
 		descriptor.value = function (...args: any[]) {
+			debug(`Registering ${propertyKey} function as ${method}-requestable.`)
 			originalMethod.apply(this, args);
 		}
 	}
 };
+
+/**
+const test: Requestable = new Requestable('remoteName');
+const result = test.get('method1', {
+	param1: 123
+});
+const result2 = test.post('method2', {
+
+});
+ */
