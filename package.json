@@ -1,7 +1,7 @@
 {
   "name": "superrequestable",
   "version": "0.1.0",
-  "description": "An API provider based on BullMQ (Redis) that allows Promise-based inter-process communication to make HTTP-like GET and POST requests.",
+  "description": "A TypeScript package based that allows asynchronous inter-process communication to make \"REST-like\" GET and POST requests.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
@@ -43,6 +43,6 @@
     "@types/ioredis": "^4.28.5",
     "@types/mocha": "~9.0.0",
     "@types/node": "~16.11.12",
-    "debug": "^4.3.3"
+    "debug": "~4.3.3"
   }
 }
