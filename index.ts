@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import IORedis from "ioredis";
 import _SuperRequestable from './lib/SuperRequestable';
 import RequestableClient from './lib/RequestableClient';
