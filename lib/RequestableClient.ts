@@ -104,14 +104,14 @@ class RequestableClient {
 					return;
 				}
 
-				debug(`Job@${method}#${requestResponseUUID} completed successfully, received response from server: %o`, result.value);
+				debug(`Job@${method}#${requestResponseUUID} completed successfully (${functionName}), received response from server: %o`, result.value);
 
 				resolve(result.value);
 			}
 
 			this.bmqQueueEvents.on('completed', callback);
 
-			debug(`Added Job@${method}#${requestResponseUUID} to the superrequestable:request queue.`);
+			debug(`Added Job@${method}#${requestResponseUUID} to the superrequestable:request queue (${functionName}).`);
 
 			this.bmqQueue.add('superrequestable:request', {
 				id: requestResponseUUID,
