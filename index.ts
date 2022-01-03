@@ -5,19 +5,20 @@ import IORedis from "ioredis";
 import _SuperRequestable from './lib/SuperRequestable';
 import RequestableClient from './lib/RequestableClient';
 import Method from "./lib/model/Method";
+import { requestable } from './lib/Requestable';
 
 /**
  * Allows to start a `SuperRequestable` server session.
  */
-class SuperRequestable {
+export class SuperRequestable {
 	/**
 	 * Starts the SuperRequestable server.
 	 */
-	public start(redis: IORedis.Redis | string): void {
+	public static start(redis: IORedis.Redis | string): void {
 		_SuperRequestable.start(redis);
 	}
 }
 
-export default new SuperRequestable();
 export { RequestableClient };
 export { Method };
+export { requestable };
