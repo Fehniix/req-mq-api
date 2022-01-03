@@ -11,7 +11,7 @@ class Redis {
 	 * @param redis Can be either an instance of `ioredis.Redis` or the connection URL.
 	 * @returns A duplicated `ioredis.Redis` connection object.
 	 */
-	public createConnection(redis: IORedis.Redis | string): IORedis.Redis {
+	public async createConnection(redis: IORedis.Redis | string): Promise<IORedis.Redis> {
 		if (redis === undefined)
 			throw new Error('"redis" cannot be undefined.');
 			
@@ -22,6 +22,13 @@ class Redis {
 			});
 		else
 			this.redisConnection = redis;
+
+		this.redisConnection.on('error', err => {
+			if (err instanceof Error)
+				throw err;
+			if (typeof err === 'string')
+				throw new Error(err);
+		});
 
 		return this.redisConnection.duplicate();
 	}

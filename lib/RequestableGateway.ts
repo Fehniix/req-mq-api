@@ -29,8 +29,8 @@ class RequestableGateway {
 	 * Instantiates the BullMQ `Worker` and `Queue`.
 	 * @param redis The Redis instance on which BullMQ will operate.
 	 */
-	public start(redis: IORedis.Redis | string) {
-		this.redisConnection = Redis.createConnection(redis);
+	public async start(redis: IORedis.Redis | string) {
+		this.redisConnection = await Redis.createConnection(redis);
 
 		this.bmqWorker = new Worker<RequestJob>('superrequestable:request', this.process.bind(this), {
 			connection: this.redisConnection

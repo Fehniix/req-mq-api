@@ -36,8 +36,8 @@ class RequestableClient {
 	/**
 	 * Starts the client.
 	 */
-	public start(redis: string | IORedis.Redis): void {
-		this.redisConnection = Redis.createConnection(redis);
+	public async start(redis: string | IORedis.Redis) {
+		this.redisConnection = await Redis.createConnection(redis);
 
 		this.bmqQueue = new Queue('superrequestable:request', {
 			connection: this.redisConnection.duplicate()
