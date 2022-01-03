@@ -1,12 +1,12 @@
 import { Queue, Worker, QueueEvents, Job } from "bullmq";
 import { randomUUID } from "crypto";
-import IORedis from "ioredis";
 import { RequestableResult } from "./model/RequestableResult";
-import Redis from "./Redis";
 import { RequestJob, ResponseJob } from "./RequestableGateway";
+import Method from "./model/Method";
+import IORedis from "ioredis";
+import Redis from "./Redis";
 
 import _debug from 'debug';
-import Method from "./model/Method";
 const debug = _debug('superrequestable:client');
 
 /**
