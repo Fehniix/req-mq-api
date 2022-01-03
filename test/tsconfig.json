@@ -3,5 +3,10 @@
 	"references": [{ "path": "../lib" }],
 	"compilerOptions": {
 		"outDir": "../dist"
-	}
+	},
+	"include": [
+		"../index.ts",
+		"./*",
+		"./**/*"
+	]
 }

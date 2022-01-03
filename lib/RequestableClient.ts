@@ -57,7 +57,7 @@ class RequestableClient {
 	 * @param functionName The remote requestable function name. **Case-sensitive**.
 	 * @param args The arguments that will be passed to the requestable function.
 	 */
-	public async get<T>(functionName: string, ...args: any[]): Promise<RequestableResult<T>> {
+	public async get<T>(functionName: string, ...args: any[]): Promise<T> {
 		return this.request<T>(functionName, 'GET', args);
 	}
 
@@ -66,17 +66,17 @@ class RequestableClient {
 	 * @param functionName The remote requestable function name. **Case-sensitive**.
 	 * @param args The arguments that will be passed to the requestable function.
 	 */
-	public async post<T>(functionName: string, ...args: any[]): Promise<RequestableResult<T>> {
+	public async post<T>(functionName: string, ...args: any[]): Promise<T> {
 		return this.request<T>(functionName, 'POST', args);
 	}
 
-	private async request<T>(functionName: string, method: Method, args: any[]): Promise<RequestableResult<T>> {
-		if (this.bmqQueue === undefined || this.bmqWorker === undefined || this.bmqQueueEvents === undefined)
-			throw new Error('The RequestableClient must be started first by calling `RequestableClient.start()`.');
-
+	private async request<T>(functionName: string, method: Method, args: any[]): Promise<T> {
 		//	This Promise resolves when the queued job gets processed by the SRequestable server, 
 		//	and its output processed by the client.
 		return new Promise((resolve, reject) => {
+			if (this.bmqQueue === undefined || this.bmqWorker === undefined || this.bmqQueueEvents === undefined)
+				reject('The RequestableClient must be started first by calling `RequestableClient.start()`.');
+
 			const requestResponseUUID: string = randomUUID();
 
 			const callback = async (args: {
@@ -104,9 +104,9 @@ class RequestableClient {
 					return;
 				}
 
-				debug(`Job@${method}#${requestResponseUUID} completed successfully.`);
+				debug(`Job@${method}#${requestResponseUUID} completed successfully, received response from server: %o`, result.value);
 
-				resolve(result);
+				resolve(result.value);
 			}
 
 			this.bmqQueueEvents.on('completed', callback);

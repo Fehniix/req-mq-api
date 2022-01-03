@@ -10,7 +10,7 @@
     "start": "npm run build && node dist/index.js",
     "dev": "export DEBUG=superrequestable,superrequestable:*&& npm start && export DEBUG=",
     "test": "export TEST=true&& npm run build && mocha --full-trace --require ./dist/test/setup.js ./dist/test/*.test.js ./dist/test/**/*.test.js && export TEST=false",
-    "test-dev": "export DEBUG=superrequestable:*&& npm test && export DEBUG="
+    "test-dev": "export DEBUG=superrequestable,superrequestable:*&& npm test && export DEBUG="
   },
   "repository": {
     "type": "git",
