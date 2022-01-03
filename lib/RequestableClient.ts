@@ -72,7 +72,7 @@ class RequestableClient {
 
 	private async request<T>(functionName: string, method: Method, args: any[]): Promise<RequestableResult<T>> {
 		if (this.bmqQueue === undefined || this.bmqWorker === undefined || this.bmqQueueEvents === undefined)
-			throw new Error('The RequestableClient must be started first by calling `.start()`.');
+			throw new Error('The RequestableClient must be started first by calling `RequestableClient.start()`.');
 
 		return new Promise((resolve, reject) => {
 			const requestResponseUUID: string = randomUUID();
