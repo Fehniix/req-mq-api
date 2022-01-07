@@ -100,7 +100,7 @@ class RequestableClient {
 
 				if (result.error !== undefined) {
 					debug(`Job@${method}#${requestResponseUUID} failed with error: ${result.error}`);
-					reject(result.error);
+					reject(new Error(result.error));
 					return;
 				}
 

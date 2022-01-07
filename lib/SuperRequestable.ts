@@ -42,18 +42,18 @@ class SuperRequestable {
 	 * @param _function The `Function` marked as `Requestable` to register.
 	 * @param method The method by which the function is callable.
 	 */
-	public register(_function: Function, method: Method, echoError: boolean = false): void {
+	public register(_function: Function, _functionName: string, method: Method, echoError: boolean = false): void {
 		let references: References = this.selectReferences(method);
 
 		if (references === undefined)
 			return;
 
-		references.set(_function.name, {
+		references.set(_functionName, {
 			_function: _function,
 			shouldEchoErrors: echoError
 		});
 
-		debug(`Registered "${_function.name}" function as ${method}-requestable. Will echo errors = ${echoError}.`);
+		debug(`Registered "${_functionName}" function as ${method}-requestable. Will echo errors = ${echoError}.`);
 	}
 
 	/**
@@ -62,7 +62,7 @@ class SuperRequestable {
 	 * @param method The request's method.
 	 * @param args The arguments that are applied to the `Requestable` function.
 	 */
-	public async request(name: string, method: Method, args?: any[]): Promise<RequestableResult> {
+	public async request(name: string, method: Method, ...args: any[]): Promise<RequestableResult> {
 		let references: References = this.selectReferences(method);
 
 		if (references === undefined)
@@ -77,7 +77,7 @@ class SuperRequestable {
 
 		let result: any;
 		try {
-			result = await _function.apply(this, args);
+			result = await _function(...args);
 		} catch (error) {
 			if (!requestableFunction.shouldEchoErrors)
 				return { error: RequestableError.DEFAULT_ERROR }

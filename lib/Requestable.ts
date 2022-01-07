@@ -14,6 +14,7 @@ const debug = _debug('superrequestable:requestable');
 export function requestable(method: Method, echoError: boolean = false) {
 	return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
 		debug(`Registering "${target?.constructor?.name}#${propertyKey}" function as ${method}-requestable.`);
-		SuperRequestable.register(descriptor.value, method, echoError);
+
+		SuperRequestable.register(descriptor.value.bind(target), descriptor.value.name, method, echoError);
 	}
 };

@@ -49,8 +49,12 @@ class RequestableGateway {
 			this.sendResponse(job.data.id, { error: RequestableError.BAD_REQUEST });
 			return;
 		}
-
-		const result: RequestableResult = await SuperRequestable.request(job.data.functionName, job.data.method, job.data.args);
+		
+		let result: RequestableResult;
+		if (job.data.args !== undefined)
+			result = await SuperRequestable.request(job.data.functionName, job.data.method, ...job.data.args);
+		else
+			result = await SuperRequestable.request(job.data.functionName, job.data.method, undefined);
 
 		this.sendResponse(job.data.id, result);
 	}
