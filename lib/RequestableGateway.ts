@@ -66,6 +66,9 @@ class RequestableGateway {
 		this.bmqQueue.add(`superrequestable:response:${id}`, {
 			id: id,
 			result: result
+		}, {
+			removeOnComplete: true,
+			removeOnFail: true
 		});
 	}
 }
