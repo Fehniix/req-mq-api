@@ -28,4 +28,4 @@ const chocolate: number = await SuperRequestable.get('gimmeChocolate', 9999);
 
 ## To-Do
 
-- Make `.get()` and `.post()` accept as arguments either spreaded objects or a single query-like object.
+- Make `.get()` and `.post()` accept as arguments either spread objects or a single query-like object.
