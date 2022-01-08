@@ -22,6 +22,26 @@ const chocolate: number = await SuperRequestable.get('gimmeChocolate', 9999);
 // Output: 9999 bars of chocolate to you!
 ```
 
+## Tests
+
+To run tests without debug logs:
+`npm test`
+
+To run tests with debug logs:
+`npm run test-debug`
+
+## Debug Logs
+
+The available debug (npm debug package) namespaces are:
+
+- superrequestable (logs registrations)
+- superrequestable:requestable (logs decorator registrations)
+- superrequestable:client (logs requests to the server service)
+
+You can enable all logs by setting the `DEBUG` environment variable to `superrequestable,superrequestable:*`:
+
+`> export DEBUG=superrequestable,superrequestable:*`
+
 ## Current Limitations
 
 - Any method belonging to different classes with the same name cannot be both `requestable`-decorated, as they would both refer to the same, last-registered, method.
