@@ -30,7 +30,7 @@ Install the package via npm:
 
 ### Server-side
 
-Start the SuperRequestable server service by providing the `#start()` method either a `IORedis` instance or a valid Redis URL:
+Start the SuperRequestable server service by providing the `start()` method either a `IORedis` instance or a valid Redis URL:
 
 ```typescript
 import { SuperRequestable } from 'superrequestable';
@@ -57,7 +57,7 @@ The `@requestable` decorator accepts two parameters:
 
 ### Client-side
 
-Start the SuperRequestable client service by providing the `#start()` method either a `IORedis` instance or a valid Redis URL:
+Start the SuperRequestable client service by providing the `start()` method either a `IORedis` instance or a valid Redis URL:
 
 ```typescript
 import { RequestableClient } from 'superrequestable';
@@ -102,6 +102,6 @@ You can enable all logs by setting the `DEBUG` environment variable to `superreq
 
 - Any method belonging to different classes with the same name cannot be both `requestable`-decorated, as they would both refer to the same, last-registered, method.
 
-## To-Do
+## License
 
-- Make `.get()` and `.post()` accept as arguments either spread objects or a single query-like object.
+MIT. Do as you please with this package. Contributions and pull requests are very well accepted, would be my pleasure to review and integrate. Thank you!
