@@ -1,5 +1,9 @@
 # SuperRequestable
 
+![Code Size](https://img.shields.io/github/languages/code-size/fehniix/superrequestable)
+![npm Total Downloads](https://img.shields.io/npm/dt/superrequestable)
+![GitHub Open Issues](https://img.shields.io/github/issues-raw/fehniix/superrequestable)
+
 **SuperRequestable** is a very small TypeScript package that allows two NodeJS processes to exchange data asynchronously in a "REST-like" fashion.
 
 ## Quick Look
@@ -105,3 +109,5 @@ You can enable all logs by setting the `DEBUG` environment variable to `superreq
 ## License
 
 MIT. Do as you please with this package. Contributions and pull requests are very well accepted, would be my pleasure to review and integrate. Thank you!
+
+[npm-downloads](https://img.shields.io/npm/dt/superrequestable)
