@@ -109,5 +109,3 @@ You can enable all logs by setting the `DEBUG` environment variable to `superreq
 ## License
 
 MIT. Do as you please with this package. Contributions and pull requests are very well accepted, would be my pleasure to review and integrate. Thank you!
-
-[npm-downloads](https://img.shields.io/npm/dt/superrequestable)
