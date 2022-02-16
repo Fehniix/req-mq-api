@@ -1,6 +1,6 @@
 {
   "name": "superrequestable",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A TypeScript package based that allows asynchronous inter-process communication to make \"REST-like\" GET and POST requests.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
