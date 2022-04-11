@@ -33,8 +33,6 @@ class RequestableClient {
 	 */
 	public async start(redis: string | IORedis.Redis) {
 		this.redisConnection = Redis.createConnection(redis);
-		await this.redisConnection.flushall();
-		console.log('flushed');
 
 		this.bmqQueue = new Queue('superrequestable:request', {
 			connection: this.redisConnection.duplicate()
