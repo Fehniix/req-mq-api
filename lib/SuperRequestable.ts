@@ -32,8 +32,8 @@ class SuperRequestable {
 	/**
 	 * Starts the SuperRequestable server.
 	 */
-	public start(redis: IORedis.Redis | string): void {
-		RequestableGateway.start(redis);
+	public async start(redis: IORedis.Redis | string): Promise<void> {
+		await RequestableGateway.start(redis);
 	}
 
 	/**

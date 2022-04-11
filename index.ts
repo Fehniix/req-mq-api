@@ -14,8 +14,8 @@ export class SuperRequestable {
 	/**
 	 * Starts the SuperRequestable server.
 	 */
-	public static start(redis: IORedis.Redis | string): void {
-		_SuperRequestable.start(redis);
+	public static async start(redis: IORedis.Redis | string): Promise<void> {
+		await _SuperRequestable.start(redis);
 	}
 }
 

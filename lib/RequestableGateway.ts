@@ -56,14 +56,14 @@ class RequestableGateway {
 		else
 			result = await SuperRequestable.request(job.data.functionName, job.data.method, undefined);
 
-		this.sendResponse(job.data.id, result);
+		await this.sendResponse(job.data.id, result);
 	}
 
 	/**
 	 * Enqueues a response job for the client to process.
 	 */
 	private async sendResponse(id: string, result: RequestableResult): Promise<void> {
-		this.bmqQueue.add(`superrequestable:response:${id}`, {
+		await this.bmqQueue.add(`superrequestable:response:${id}`, {
 			id: id,
 			result: result
 		}, {

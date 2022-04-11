@@ -1,4 +1,4 @@
-import { Queue, Worker, QueueEvents, Job } from "bullmq";
+import { Queue, Worker, Job } from "bullmq";
 import { randomUUID } from "crypto";
 import { RequestableResult } from "./model/RequestableResult";
 import { RequestJob, ResponseJob } from "./RequestableGateway";
@@ -24,11 +24,6 @@ class RequestableClient {
 	private bmqQueue!: Queue<RequestJob>;
 
 	/**
-	 * The BullMQ Events object responsible for determining when a response was received.
-	 */
-	private bmqQueueEvents!: QueueEvents;
-
-	/**
 	 * The IORedis connection used by the underlying BullMQ queue and worker.
 	 */
 	private redisConnection!: IORedis.Redis;
@@ -38,16 +33,14 @@ class RequestableClient {
 	 */
 	public async start(redis: string | IORedis.Redis) {
 		this.redisConnection = Redis.createConnection(redis);
+		await this.redisConnection.flushall();
+		console.log('flushed');
 
 		this.bmqQueue = new Queue('superrequestable:request', {
 			connection: this.redisConnection.duplicate()
 		});
 
 		this.bmqWorker = new Worker('superrequestable:response', (() => {}) as any, {
-			connection: this.redisConnection.duplicate()
-		});
-
-		this.bmqQueueEvents = new QueueEvents('superrequestable:response', {
 			connection: this.redisConnection.duplicate()
 		});
 	}
@@ -73,21 +66,17 @@ class RequestableClient {
 	private async request<T>(functionName: string, method: Method, args: any[]): Promise<T> {
 		//	This Promise resolves when the queued job gets processed by the SRequestable server, 
 		//	and its output processed by the client.
-		return new Promise((resolve, reject) => {
-			if (this.bmqQueue === undefined || this.bmqWorker === undefined || this.bmqQueueEvents === undefined)
+		return new Promise(async (resolve, reject) => {
+			if (this.bmqQueue === undefined || this.bmqWorker === undefined)
 				reject('The RequestableClient must be started first by calling `RequestableClient.start()`.');
 
 			const requestResponseUUID: string = randomUUID();
 
-			const callback = async (args: {
-				jobId: string;
-				returnvalue: string;
-				prev?: string | undefined;
-			}, _: string) => {
-				const completedJob: Job<ResponseJob> | undefined = await Job.fromId(this.bmqWorker, args.jobId);
+			const callback = async (job: Job<ResponseJob>) => {
+				const completedJob: Job<ResponseJob> | undefined = job;
 
 				if (completedJob === undefined) {
-					debug(`Job #${args.jobId} is undefined.`);
+					debug(`Job #${job.id} is undefined.`);
 					return;
 				}
 
@@ -96,7 +85,7 @@ class RequestableClient {
 
 				const result: RequestableResult = completedJob.data.result;
 
-				this.bmqQueueEvents.off('completed', callback);
+				this.bmqWorker.off('completed', callback);
 
 				if (result.error !== undefined) {
 					debug(`Job@${method}#${requestResponseUUID} failed with error: ${result.error}`);
@@ -109,11 +98,11 @@ class RequestableClient {
 				resolve(result.value);
 			}
 
-			this.bmqQueueEvents.on('completed', callback);
+			this.bmqWorker.on('completed', callback);
 
 			debug(`Added Job@${method}#${requestResponseUUID} to the superrequestable:request queue (${functionName}).`);
 
-			this.bmqQueue.add('superrequestable:request', {
+			await this.bmqQueue.add('superrequestable:request', {
 				id: requestResponseUUID,
 				functionName: functionName,
 				method: method,
