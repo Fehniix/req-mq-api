@@ -37,7 +37,7 @@ class RequestableGateway {
 		});
 
 		this.bmqQueue = new Queue<ResponseJob>('superrequestable:response', {
-			connection: this.redisConnection?.duplicate()
+			connection: this.redisConnection
 		})
 	}
 

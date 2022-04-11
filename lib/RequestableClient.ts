@@ -35,11 +35,11 @@ class RequestableClient {
 		this.redisConnection = Redis.createConnection(redis);
 
 		this.bmqQueue = new Queue('superrequestable:request', {
-			connection: this.redisConnection.duplicate()
+			connection: this.redisConnection
 		});
 
 		this.bmqWorker = new Worker('superrequestable:response', (() => {}) as any, {
-			connection: this.redisConnection.duplicate()
+			connection: this.redisConnection
 		});
 	}
 
