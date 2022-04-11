@@ -23,7 +23,7 @@ class Redis {
 		else
 			this.redisConnection = redis;
 
-		return this.redisConnection.duplicate();
+		return this.redisConnection;
 	}
 }
 
